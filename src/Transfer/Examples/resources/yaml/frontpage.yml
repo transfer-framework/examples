@@ -1,0 +1,40 @@
+frontpage:
+    main_group_identifier: "Content"
+    contenttype_groups:
+        - Content
+    main_language_code: "eng-GB"
+    names:
+        eng-GB: "Frontpage"
+        nor-NO: "Forside"
+    descriptions:
+        eng-GB: "Frontpage description"
+        nor-NO: "Forsidebeskrivelse"
+    name_schema: "<name>"
+    url_alias_schema: "<name>"
+    fields:
+        name:
+            type: ezstring
+            group: "content"
+            position: 10
+            names:
+                eng-GB: "Name"
+                nor-NO: "Navn"
+            descriptions:
+                eng-GB: "Frontpage name"
+                nor-NO: "Forsidenavn"
+            translatable: true
+            required: true
+            searchable: true
+        description:
+            type: ezstring
+            group: "content"
+            position: 20
+            names:
+                eng-GB: "Description"
+                nor-NO: "Beskrivelse"
+            descriptions:
+                eng-GB: "Frontpage description"
+                nor-NO: "Forsidebeskrivelse"
+            translatable: false
+            required: false
+            searchable: false
