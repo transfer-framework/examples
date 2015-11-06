@@ -1,6 +1,6 @@
 <?php
 
-namespace Transfer\Examples\Manifest;
+namespace Transfer\Examples\YamlToEzPlatformContentType\Manifest;
 
 use Transfer\Manifest\ManifestChain;
 
