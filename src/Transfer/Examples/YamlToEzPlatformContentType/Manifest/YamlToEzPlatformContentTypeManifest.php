@@ -6,13 +6,15 @@ use eZ\Publish\API\Repository\Repository;
 use Transfer\Commons\Stream\Adapter\StreamAdapter;
 use Transfer\Commons\Yaml\Worker\Transformer\YamlToArrayTransformer;
 use Transfer\EzPlatform\Adapter\EzPlatformAdapter;
+use Transfer\EzPlatform\Worker\Transformer\ArrayToEzPlatformContentTypeObjectTransformer;
 use Transfer\Manifest\AbstractManifest;
 use Transfer\Manifest\ManifestInterface;
 use Transfer\Procedure\ProcedureBuilder;
 use Transfer\Processor\EventDrivenProcessor;
-use Transfer\Processor\EventSubscriber\Logger;
 use Transfer\Processor\ProcessorInterface;
 use Transfer\Processor\SequentialProcessor;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class YamlToEzPlatformContentTypeManifest implements ManifestInterface
 {
@@ -21,6 +23,11 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
      * @var Repository
      */
     protected $repository;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
 
     /**
      * @var SequentialProcessor
@@ -57,8 +64,9 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
         $builder
             ->createProcedure('import')
                 ->createProcedure('contenttype')
-                    ->addSource(new StreamAdapter(fopen(__DIR__.'/../resources/yaml/frontpage.yml', 'r')))
+                    ->addSource(new StreamAdapter(fopen(__DIR__.'/../resources/yaml/detailed.yml', 'r')))
                         ->addWorker(new YamlToArrayTransformer())
+                        ->AddWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
                     ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
                 ->end()
             ->end()
@@ -70,15 +78,11 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
      */
     public function configureProcessor(ProcessorInterface $processor)
     {
-        /*
         $logger = new Logger('default');
-        $logger->pushHandler(new StreamHandler(sprintf('%s/%s.log', 'var/log/transfer/contenttype', date('Y-m-d')), Logger::DEBUG));
+        $logger->pushHandler(new StreamHandler(sprintf('%s/%s.log', 'ezpublish/logs/transfer/contenttype', date('Y-m-d')), Logger::DEBUG));
         if ($processor instanceof EventDrivenProcessor) {
             $processor->setLogger($logger);
-            $processor->setStorageStack($this->stack);
-            $processor->addListener(TransferEvents::POST_PROCESS, array(new ModelRemover($this->tracker), 'deactivate'));
         }
-        */
     }
 
 }

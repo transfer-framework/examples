@@ -5,10 +5,10 @@ frontpage:
     main_language_code: "eng-GB"
     names:
         eng-GB: "Frontpage"
-        nor-NO: "Forside"
+#        nor-NO: "Forside"
     descriptions:
         eng-GB: "Frontpage description"
-        nor-NO: "Forsidebeskrivelse"
+#        nor-NO: "Forsidebeskrivelse"
     name_schema: "<name>"
     url_alias_schema: "<name>"
     fields:
@@ -18,10 +18,10 @@ frontpage:
             position: 10
             names:
                 eng-GB: "Name"
-                nor-NO: "Navn"
+#                nor-NO: "Navn"
             descriptions:
                 eng-GB: "Frontpage name"
-                nor-NO: "Forsidenavn"
+#                nor-NO: "Forsidenavn"
             translatable: true
             required: true
             searchable: true
@@ -31,10 +31,10 @@ frontpage:
             position: 20
             names:
                 eng-GB: "Description"
-                nor-NO: "Beskrivelse"
+#                nor-NO: "Beskrivelse"
             descriptions:
                 eng-GB: "Frontpage description"
-                nor-NO: "Forsidebeskrivelse"
+#                nor-NO: "Forsidebeskrivelse"
             translatable: false
             required: false
             searchable: false
