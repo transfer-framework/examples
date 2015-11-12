@@ -7,7 +7,6 @@ use Transfer\Commons\Stream\Adapter\StreamAdapter;
 use Transfer\Commons\Yaml\Worker\Transformer\YamlToArrayTransformer;
 use Transfer\EzPlatform\Adapter\EzPlatformAdapter;
 use Transfer\EzPlatform\Worker\Transformer\ArrayToEzPlatformContentTypeObjectTransformer;
-use Transfer\Manifest\AbstractManifest;
 use Transfer\Manifest\ManifestInterface;
 use Transfer\Procedure\ProcedureBuilder;
 use Transfer\Processor\EventDrivenProcessor;
@@ -64,9 +63,9 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
         $builder
             ->createProcedure('import')
                 ->createProcedure('contenttype')
-                    ->addSource(new StreamAdapter(fopen(__DIR__.'/../resources/yaml/detailed.yml', 'r')))
+                    ->addSource(new StreamAdapter(fopen( __DIR__.'/../resources/yaml/detailed.yml', 'r')))
                         ->addWorker(new YamlToArrayTransformer())
-                        ->AddWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
+                        ->addWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
                     ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
                 ->end()
             ->end()
