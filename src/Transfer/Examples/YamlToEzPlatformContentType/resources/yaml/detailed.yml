@@ -1,0 +1,34 @@
+frontpage:
+    main_group_identifier: "Content"
+    contenttype_groups:
+        - Content
+    main_language_code: "eng-GB"
+    names:
+        eng-GB: "Frontpage"
+    descriptions:
+        eng-GB: "Frontpage description"
+    name_schema: "<name>"
+    url_alias_schema: "<name>"
+    fields:
+        name:
+            type: ezstring
+            group: "content"
+            position: 10
+            names:
+                eng-GB: "Name"
+            descriptions:
+                eng-GB: "Frontpage name"
+            translatable: true
+            required: true
+            searchable: true
+        description:
+            type: ezstring
+            group: "content"
+            position: 20
+            names:
+                eng-GB: "Description"
+            descriptions:
+                eng-GB: "Frontpage description"
+            translatable: false
+            required: false
+            searchable: false

@@ -1,0 +1,6 @@
+banner:
+    fields:
+        title:
+            type: ezstring
+        description:
+            type: ezstring
