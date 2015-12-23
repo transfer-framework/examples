@@ -16,9 +16,6 @@ use Transfer\Manifest\ManifestRunner;
 
 class YamlToEzPlatformContentTypeManifestTest extends EzPlatformTestCase
 {
-    /**
-     * @covers YamlToEzPlatformContentTypeManifest
-     */
     public function testManifestRunsToItsEnd()
     {
         $completed = false;

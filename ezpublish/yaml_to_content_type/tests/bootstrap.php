@@ -16,7 +16,6 @@ if (!file_exists($configDir.'/config.php')) {
     }
 }
 
-$loader->addPsr4('Transfer\\EzPlatform\\Tests\\', __DIR__.'/../../ezplatform/src/Transfer/EzPlatform');
-$loader->addPsr4('Transfer\\EzPlatform\\Tests\\', __DIR__.'/../../ezplatform/tests/Transfer/EzPlatform/Tests');
+$loader->addPsr4('Transfer\\EzPlatform\\Tests\\', __DIR__.'/../vendor/transfer/ezplatform/tests/Transfer/EzPlatform/Tests');
 $loader->addPsr4('Transfer\\Examples\\', __DIR__.'/../src/Transfer/Examples');
 $loader->addPsr4('Transfer\\Examples\\Tests\\', __DIR__.'/Transfer/Examples/Tests');

@@ -2,9 +2,13 @@ language: php
 
 sudo: false
 
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
 matrix:
     include:
-        - php: 5.4
         - php: 5.5
         - php: 5.6
         - php: 7.0
@@ -13,11 +17,15 @@ matrix:
         - php: hhvm
     fast_finish: true
 
+env:
+    - TEST_DIR=ezpublish/yaml_to_content_type
+
 before_install:
     - composer self-update
+    - cd $TEST_DIR
 
 install:
-    - composer --prefer-source install
+    - composer --prefer-source update
 
 script:
-    - ezpublish/yaml_to_content_type/vendor/phpunit/phpunit/phpunit
+    - vendor/phpunit/phpunit/phpunit
