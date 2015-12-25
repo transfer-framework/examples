@@ -5,6 +5,7 @@ namespace Transfer\Examples\YamlToEzPlatformContentType\Manifest;
 use eZ\Publish\API\Repository\Repository;
 use Transfer\Adapter\LocalDirectoryAdapter;
 use Transfer\Commons\Yaml\Worker\Transformer\YamlToArrayTransformer;
+use Transfer\Data\ValueObject;
 use Transfer\EzPlatform\Adapter\EzPlatformAdapter;
 use Transfer\EzPlatform\Worker\Transformer\ArrayToEzPlatformContentTypeObjectTransformer;
 use Transfer\Manifest\ManifestInterface;
@@ -63,6 +64,9 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
             ->createProcedure('import')
                 ->createProcedure('contenttype')
                     ->addSource(new LocalDirectoryAdapter(array('directory' => __DIR__.'/../resources/yaml')))
+                        ->addWorker(function (ValueObject $object) {
+                            return $object->data;
+                        })
                         ->addWorker(new YamlToArrayTransformer())
                         ->addWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
                     ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
@@ -77,7 +81,7 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
     public function configureProcessor(ProcessorInterface $processor)
     {
         $logger = new Logger('default');
-        $logger->pushHandler(new StreamHandler(sprintf('%s/%s.log', 'app/logs/transfer/contenttype', date('Y-m-d')), Logger::DEBUG));
+        $logger->pushHandler(new StreamHandler(sprintf('%s/%s.log', '../../app/logs/transfer/contenttype', date('Y-m-d')), Logger::DEBUG));
         if ($processor instanceof EventDrivenProcessor) {
             $processor->setLogger($logger);
         }

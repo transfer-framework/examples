@@ -25,7 +25,7 @@ before_install:
     - cd $TEST_DIR
 
 install:
-    - composer --prefer-source update
+    - composer --prefer-source install
 
 script:
     - vendor/phpunit/phpunit/phpunit
