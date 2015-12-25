@@ -21,6 +21,7 @@ env:
     - TEST_DIR=ezpublish/yaml_to_content_type
 
 before_install:
+    - phpenv config-rm xdebug.ini
     - composer self-update
     - cd $TEST_DIR
 
