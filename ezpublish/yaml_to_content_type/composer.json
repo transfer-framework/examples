@@ -1,0 +1,31 @@
+{
+  "name":         "transfer/examples",
+  "type":         "library",
+  "description":  "Example manifests for Transfer",
+  "keywords":     ["transfer", "manifest", "worker"],
+  "license":      "MIT",
+  "authors":      [
+    {
+      "name":     "Harald Tollefsen",
+      "email":    "harald@tollefsen.info"
+    }
+  ],
+  "require":      {
+    "php":  ">=5.3.0",
+    "symfony/yaml": "~2.7",
+    "monolog/monolog": "~1.17",
+    "doctrine/orm": "^2.5",
+    "transfer/ezplatform": "1.0.x-dev"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.7"
+  },
+  "autoload":     {
+    "psr-0": { "Transfer\\Examples\\": "src/" }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}

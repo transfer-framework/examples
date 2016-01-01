@@ -1,0 +1,41 @@
+article:
+    main_language_code: 'eng-GB'
+    contenttype_groups:
+        - 'Content'
+    names:
+        eng-GB: 'Article'
+    descriptions:
+        eng-GB: 'Article description'
+    name_schema: '<title>'
+    url_alias_schema: '<title>'
+    is_container: true
+    default_always_available: true
+    default_sort_field: 2
+    default_sort_order: 1
+    fields:
+        title:
+            type: 'ezstring'
+            field_group: 'content'
+            position: 0
+            names:
+                eng-GB: 'Title'
+            descriptions:
+                eng-GB: 'Title of the article'
+            default_value: 'My Article'
+            is_required: true
+            is_translatable: true
+            is_searchable: true
+            is_info_collector: false
+        content:
+            type: 'ezrichtext'
+            field_group: 'content'
+            position: 10
+            names:
+                eng-GB: 'Content'
+            descriptions:
+                eng-GB: 'Content of the article'
+            default_value: ''
+            is_required: false
+            is_translatable: true
+            is_searchable: true
+            is_info_collector: false
