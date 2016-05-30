@@ -15,6 +15,7 @@ use Transfer\Processor\ProcessorInterface;
 use Transfer\Processor\SequentialProcessor;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Transfer\Worker\SplitterWorker;
 
 class YamlToEzPlatformContentTypeManifest implements ManifestInterface
 {
@@ -69,6 +70,7 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
                         })
                         ->addWorker(new YamlToArrayTransformer())
                         ->addWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
+                        ->addWorker(new SplitterWorker())
                     ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
                 ->end()
             ->end()
