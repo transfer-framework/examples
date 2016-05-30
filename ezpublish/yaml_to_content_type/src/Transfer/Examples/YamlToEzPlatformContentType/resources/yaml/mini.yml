@@ -1,4 +1,6 @@
 banner:
     fields:
-        title: -
-        description: -
+        title:
+            type: ezstring
+        description:
+            type: ezstring
