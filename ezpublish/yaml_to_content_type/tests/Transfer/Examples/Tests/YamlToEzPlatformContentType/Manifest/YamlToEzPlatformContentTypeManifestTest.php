@@ -9,19 +9,34 @@
 
 namespace Transfer\Examples\Tests\YamlToEzPlatformContentType\Manifest;
 
+use eZ\Publish\API\Repository\Repository;
+use eZ\Publish\Core\Repository\Tests\Service\Integration\Legacy\SetupFactory;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Transfer\Event\TransferEvents;
 use Transfer\Examples\YamlToEzPlatformContentType\Manifest\YamlToEzPlatformContentTypeManifest;
-use Transfer\EzPlatform\Tests\EzPlatformTestCase;
 use Transfer\Manifest\ManifestRunner;
+use Transfer\Processor\EventDrivenProcessor;
 
-class YamlToEzPlatformContentTypeManifestTest extends EzPlatformTestCase
+class YamlToEzPlatformContentTypeManifestTest extends KernelTestCase
 {
+    /**
+     * @var Repository
+     */
+    protected static $repository;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $setupFactory = new SetupFactory();
+        static::$repository = $setupFactory->getRepository();
+    }
+
     public function testManifestRunsToItsEnd()
     {
         $completed = false;
         $manifest = new YamlToEzPlatformContentTypeManifest(static::$repository);
 
-        $this->assertInstanceOf('Transfer\Processor\EventDrivenProcessor', $manifest->getProcessor());
+        $this->assertInstanceOf(EventDrivenProcessor::class, $manifest->getProcessor());
         $manifest->getProcessor()->addListener(TransferEvents::POST_PROCEDURE, function () use (&$completed) {
             $completed = true;
         });
