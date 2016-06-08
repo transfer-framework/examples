@@ -1,0 +1,14 @@
+google_news:
+    fields:
+        title:
+            type: ezstring
+            position: 1
+        category:
+            type: ezstring
+            position: 2
+        publish_date:
+            type: ezdate
+            position: 3
+        link:
+            type: ezurl
+            position: 4
