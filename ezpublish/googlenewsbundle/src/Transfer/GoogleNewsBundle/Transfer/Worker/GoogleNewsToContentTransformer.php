@@ -17,11 +17,11 @@ class GoogleNewsToContentTransformer implements WorkerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle($arrays)
+    public function handle($data)
     {
         $feeds = array();
 
-        foreach ($arrays['channel']['item'] as $feed) {
+        foreach ($data['channel']['item'] as $feed) {
             $feeds[] = new ContentObject(
                 array(
                     'title' => $feed['title'],
@@ -31,7 +31,7 @@ class GoogleNewsToContentTransformer implements WorkerInterface
                 ),
                 array(
                     // 'main_location_id' => int, // We will append this in our manifest.
-                    'language' => 'eng-GB',
+                    'main_language_code' => 'eng-GB',
                     'content_type_identifier' => 'google_news',
                     'remote_id' => 'google_news_'.strtolower(preg_replace('/[^A-Za-z0-9]/', '', $feed['title'])),
                 )

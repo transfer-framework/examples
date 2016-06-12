@@ -11,15 +11,13 @@ namespace Transfer\GoogleNewsBundle\Transfer\Worker;
 
 use Transfer\Worker\WorkerInterface;
 
-class XmlToArrayTransformer implements WorkerInterface
+class SimpleXmlToArrayTransformer implements WorkerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function handle($xml_string)
+    public function handle($simpleXmlElement)
     {
-        return json_decode(json_encode(
-            simplexml_load_string($xml_string)
-        ), true);
+        return json_decode(json_encode((array) $simpleXmlElement), 1);
     }
 }
