@@ -3,14 +3,16 @@
 namespace Transfer\GoogleNewsBundle\Transfer\Manifest;
 
 use eZ\Publish\API\Repository\Repository;
+use Transfer\Commons\Xml\Worker\Transformer\StringToSimpleXmlTransformer;
+use Transfer\EzPlatform\Repository\Values\ContentObject;
 use Transfer\GoogleNewsBundle\Transfer\Adapter\GoogleNewsAdapter;
-use Transfer\GoogleNewsBundle\Transfer\Worker\XmlToArrayTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Transfer\Adapter\LocalDirectoryAdapter;
 use Transfer\Commons\Yaml\Worker\Transformer\YamlToArrayTransformer;
 use Transfer\Data\ValueObject;
 use Transfer\EzPlatform\Adapter\EzPlatformAdapter;
 use Transfer\EzPlatform\Worker\Transformer\ArrayToEzPlatformContentTypeObjectTransformer;
+use Transfer\GoogleNewsBundle\Transfer\Worker\SimpleXmlToArrayTransformer;
 use Transfer\Manifest\ManifestInterface;
 use Transfer\Procedure\ProcedureBuilder;
 use Transfer\Processor\EventDrivenProcessor;
@@ -58,10 +60,11 @@ class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
      *
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    private function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('url'));
+        $resolver->setDefault('url', 'https://news.google.com/news?cf=all&hl=en&ned=us&topic=t&output=rss');
         $resolver->setAllowedTypes('url', array('string'));
+
         $resolver->setRequired(array('location_id'));
         $resolver->setAllowedTypes('location_id', array('int'));
     }
@@ -100,12 +103,6 @@ class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
                         ->addWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
                         ->addWorker(new SplitterWorker())
 
-            ->addWorker(function (ValueObject $object) {
-                print_r($object->data['fields']['link']->data['default_value']);
-                $object->data['fields']['link']->data['default_value'] = null;
-                return $object;
-            })
-
                     ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
 
                 ->end()
@@ -113,22 +110,30 @@ class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
                 // Create or update our Content
                 ->createProcedure('google_news_content')
 
+                    // The source of our content, an adapter which fetches data from Google News
                     ->addSource(new GoogleNewsAdapter(array('url' => $this->options['url'])))
 
-                        ->addWorker(new XmlToArrayTransformer())
+                        // Worker which transforms xml string into simplexml
+                        ->addWorker(new StringToSimpleXmlTransformer())
+
+                        // Transforms SimpleXml into array
+                        ->addWorker(new SimpleXmlToArrayTransformer())
+
+                        // Transforms our data into eZPlatform ContentObject
                         ->addWorker(new GoogleNewsToContentTransformer())
+
+                        // Split the collection into individual elemnts
                         ->addWorker(new SplitterWorker())
 
+                        // Creating a mini-worker to add our location id
                         ->addWorker(function ($data) {
-                            /* @var $data ValueObject */
-                            $data->setProperty('main_location_id', array(
-                                'destination_location_id' => $this->options['location_id'],
-                            ));
-                            $data->setProperty('main_language_code', 'eng-GB');
+                            /* @var $data ContentObject */
+                            $data->addParentLocation($this->options['location_id']);
 
                             return $data;
                         })
 
+                    // Pass the ContentObject to EzPlatformAdapter to be stored in eZ Platform/eZ Studio
                     ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
                 ->end()
             ->end()

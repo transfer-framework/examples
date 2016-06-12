@@ -80,8 +80,9 @@ class GoogleNewsAdapter implements SourceAdapterInterface, LoggerAwareInterface
     {
         $response = new Response();
 
-        $feed = $this->getGoogleNewsXml();
-        $response->setData(new \ArrayIterator(array($feed)));
+        $data = $this->getGoogleNewsXml();
+
+        $response->setData(new \ArrayIterator(array($data)));
 
         return $response;
     }

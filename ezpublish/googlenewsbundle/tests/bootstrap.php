@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Transfer.
  *
@@ -15,7 +16,3 @@ if (!file_exists($configDir.'/config.php')) {
 
 /** @var Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../vendor/autoload.php';
-
-/** 
-/unit/Transfer/Tests
-*/

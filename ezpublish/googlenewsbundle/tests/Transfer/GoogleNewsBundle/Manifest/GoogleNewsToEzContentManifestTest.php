@@ -24,11 +24,17 @@ class GoogleNewsToEzContentManifestTest extends KernelTestCase
 
     public function testManifestRun()
     {
+        // design/plainsite location id
+        $parentLocationId = 56;
         $completed = false;
+
+        $location = static::$repository->getLocationService()->loadLocation($parentLocationId);
+        $children = static::$repository->getLocationService()->loadLocationChildren($location);
+        $this->assertLessThan(4, $children->totalCount);
 
         $manifest = new GoogleNewsToEzPlatformContentManifest(static::$repository, array(
             'url' => 'https://news.google.com/news?cf=all&hl=en&ned=us&topic=t&output=rss',
-            'location_id' => 145,
+            'location_id' => $parentLocationId,
         ));
 
         $this->assertInstanceOf(EventDrivenProcessor::class, $manifest->getProcessor());
@@ -43,5 +49,9 @@ class GoogleNewsToEzContentManifestTest extends KernelTestCase
         $this->assertTrue($completed);
 
         $this->assertEquals('googlenews_to_ezplatform_content', $manifest->getName());
+
+        $location = static::$repository->getLocationService()->loadLocation($parentLocationId);
+        $children = static::$repository->getLocationService()->loadLocationChildren($location);
+        $this->assertGreaterThan(4, $children->totalCount);
     }
 }
