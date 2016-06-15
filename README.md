@@ -11,6 +11,7 @@ Listing
 ### eZ Publish
 
 * [Import of eZ Content types from YAML/array](ezpublish/yaml_to_content_type)
+* [Creating eZ ContentType and import from Google News](ezpublish/googlenewsbundle)
 
 Contributions
 -------------
