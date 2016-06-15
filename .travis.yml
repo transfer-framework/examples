@@ -4,29 +4,33 @@ sudo: false
 
 cache:
   directories:
-    - vendor
     - $HOME/.composer/cache
+    - yaml_to_content_type/vendor
+    - googlenewsbundle/vendor
 
 matrix:
     include:
         - php: 5.5
+          env: TEST_DIR=ezpublish/googlenewsbundle
+        - php: 5.5
+          env: TEST_DIR=ezpublish/yaml_to_content_type
         - php: 5.6
+          env: TEST_DIR=ezpublish/googlenewsbundle
+        - php: 5.6
+          env: TEST_DIR=ezpublish/yaml_to_content_type
         - php: 7.0
-        - php: hhvm
-    allow_failures:
-        - php: hhvm
+          env: TEST_DIR=ezpublish/googlenewsbundle
+        - php: 7.0
+          env: TEST_DIR=ezpublish/yaml_to_content_type
     fast_finish: true
 
-env:
-    - TEST_DIR=ezpublish/yaml_to_content_type
-
 before_install:
-    - if [ "`phpenv version-name`" != "hhvm" ]; then phpenv config-rm xdebug.ini; fi
+    - phpenv config-rm xdebug.ini
     - composer self-update
-    - cd $TEST_DIR
 
 install:
-    - composer --prefer-source install
+    - cd $TEST_DIR
+    - composer install
 
 script:
     - vendor/phpunit/phpunit/phpunit
