@@ -1,0 +1,10 @@
+services:
+    googlenewsbundle.transfer.manifest.googlenews_to_content:
+        class: Transfer\GoogleNewsBundle\Transfer\Manifest\GoogleNewsToEzPlatformContentManifest
+        arguments:
+            - @ezpublish.api.repository
+            -
+                url: 'https://news.google.com/news?cf=all&hl=en&ned=us&topic=t&output=rss'
+                location_id: 145
+        tags:
+            - { name: transfer.manifest }
