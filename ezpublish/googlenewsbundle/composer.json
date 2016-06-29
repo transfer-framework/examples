@@ -4,7 +4,6 @@
   "description": "Example bundle for transfer/ezplatform",
   "keywords": ["transfer", "extension", "manifest", "worker"],
   "license": "MIT",
-  "minimun-stability": "dev",
   "authors": [
     {
       "name": "Harald Tollefsen",
@@ -16,7 +15,7 @@
     "symfony/yaml": "~2.7",
     "monolog/monolog": "~1.17",
     "doctrine/orm": "^2.5",
-    "transfer/ezplatform": "1.0.x-dev"
+    "transfer/ezplatform": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.7"
@@ -24,6 +23,11 @@
   "autoload": {
     "psr-4": {
       "Transfer\\GoogleNewsBundle\\": "src/Transfer/GoogleNewsBundle/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
     }
   }
 }

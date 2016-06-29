@@ -2,11 +2,7 @@
   "name": "transfer/examples",
   "type": "library",
   "description": "Example manifests for Transfer",
-  "keywords": [
-    "transfer",
-    "manifest",
-    "worker"
-  ],
+  "keywords": ["transfer", "manifest", "worker"],
   "license": "MIT",
   "authors": [
     {
@@ -19,7 +15,7 @@
     "symfony/yaml": "~2.7",
     "monolog/monolog": "~1.17",
     "doctrine/orm": "^2.5",
-    "transfer/ezplatform": "1.0.x-dev"
+    "transfer/ezplatform": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.7"

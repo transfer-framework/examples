@@ -8,6 +8,7 @@
  */
 
 $configDir = __DIR__.'/../vendor/ezsystems/ezpublish-kernel';
+
 if (!file_exists($configDir.'/config.php')) {
     if (!symlink($configDir.'/config.php-DEVELOPMENT', $configDir.'/config.php')) {
         throw new \RuntimeException('Could not symlink config.php-DEVELOPMENT to config.php!');
