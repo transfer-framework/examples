@@ -12,7 +12,7 @@
 
     <testsuites>
         <testsuite name="Transfer Examples Unit Tests">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">./tests/Transfer/GoogleNewsBundle</directory>
         </testsuite>
     </testsuites>
 
