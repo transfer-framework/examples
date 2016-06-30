@@ -1,4 +1,5 @@
 google_news:
+    identifier: google_news
     fields:
         title:
             type: ezstring

@@ -5,13 +5,13 @@ namespace Transfer\GoogleNewsBundle\Transfer\Manifest;
 use eZ\Publish\API\Repository\Repository;
 use Transfer\Commons\Xml\Worker\Transformer\StringToSimpleXmlTransformer;
 use Transfer\EzPlatform\Repository\Values\ContentObject;
+use Transfer\EzPlatform\Repository\Values\ContentTypeObject;
 use Transfer\GoogleNewsBundle\Transfer\Adapter\GoogleNewsAdapter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Transfer\Adapter\LocalDirectoryAdapter;
 use Transfer\Commons\Yaml\Worker\Transformer\YamlToArrayTransformer;
 use Transfer\Data\ValueObject;
 use Transfer\EzPlatform\Adapter\EzPlatformAdapter;
-use Transfer\EzPlatform\Worker\Transformer\ArrayToEzPlatformContentTypeObjectTransformer;
 use Transfer\GoogleNewsBundle\Transfer\Worker\SimpleXmlToArrayTransformer;
 use Transfer\Manifest\ManifestInterface;
 use Transfer\Procedure\ProcedureBuilder;
@@ -20,7 +20,6 @@ use Transfer\Processor\ProcessorInterface;
 use Transfer\Processor\SequentialProcessor;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Transfer\Worker\SplitterWorker;
 use Transfer\GoogleNewsBundle\Transfer\Worker\GoogleNewsToContentTransformer;
 
 class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
@@ -100,10 +99,12 @@ class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
 
                         ->addWorker(function (ValueObject $object) { return $object->data; })
                         ->addWorker(new YamlToArrayTransformer())
-                        ->addWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
-                        ->addWorker(new SplitterWorker())
+                        ->split()
+                        ->addWorker(function ($data) {
+                            return new ContentTypeObject($data);
+                        })
 
-                    ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
+                    ->addTarget(new EzPlatformAdapter($this->repository))
 
                 ->end()
 
@@ -123,7 +124,7 @@ class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
                         ->addWorker(new GoogleNewsToContentTransformer())
 
                         // Split the collection into individual elemnts
-                        ->addWorker(new SplitterWorker())
+                        ->split()
 
                         // Creating a mini-worker to add our location id
                         ->addWorker(function ($data) {
@@ -134,7 +135,7 @@ class GoogleNewsToEzPlatformContentManifest implements ManifestInterface
                         })
 
                     // Pass the ContentObject to EzPlatformAdapter to be stored in eZ Platform/eZ Studio
-                    ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
+                    ->addTarget(new EzPlatformAdapter($this->repository))
                 ->end()
             ->end()
         ;

@@ -7,7 +7,7 @@ use Transfer\Adapter\LocalDirectoryAdapter;
 use Transfer\Commons\Yaml\Worker\Transformer\YamlToArrayTransformer;
 use Transfer\Data\ValueObject;
 use Transfer\EzPlatform\Adapter\EzPlatformAdapter;
-use Transfer\EzPlatform\Worker\Transformer\ArrayToEzPlatformContentTypeObjectTransformer;
+use Transfer\EzPlatform\Repository\Values\ContentTypeObject;
 use Transfer\Manifest\ManifestInterface;
 use Transfer\Procedure\ProcedureBuilder;
 use Transfer\Processor\EventDrivenProcessor;
@@ -15,7 +15,6 @@ use Transfer\Processor\ProcessorInterface;
 use Transfer\Processor\SequentialProcessor;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Transfer\Worker\SplitterWorker;
 
 class YamlToEzPlatformContentTypeManifest implements ManifestInterface
 {
@@ -65,13 +64,13 @@ class YamlToEzPlatformContentTypeManifest implements ManifestInterface
             ->createProcedure('import')
                 ->createProcedure('contenttype')
                     ->addSource(new LocalDirectoryAdapter(array('directory' => __DIR__.'/../resources/yaml')))
-                        ->addWorker(function (ValueObject $object) {
-                            return $object->data;
-                        })
+                        ->addWorker(function (ValueObject $object) { return $object->data; })
                         ->addWorker(new YamlToArrayTransformer())
-                        ->addWorker(new ArrayToEzPlatformContentTypeObjectTransformer())
-                        ->addWorker(new SplitterWorker())
-                    ->addTarget(new EzPlatformAdapter(array('repository' => $this->repository)))
+                        ->split()
+                        ->addWorker(function ($data) {
+                            return new ContentTypeObject($data);
+                        })
+                    ->addTarget(new EzPlatformAdapter($this->repository))
                 ->end()
             ->end()
         ;

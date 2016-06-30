@@ -1,6 +1,9 @@
 banner:
+    identifier: banner
     fields:
         title:
             type: ezstring
+            position: 10
         description:
             type: ezstring
+            position: 20
